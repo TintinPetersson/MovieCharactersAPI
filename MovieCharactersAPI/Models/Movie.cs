@@ -20,8 +20,8 @@ namespace MovieCharactersAPI.Models
         public string Picture { get; set; }
         //• Trailer(YouTube link most likely)
         public string Trailer { get; set; }
-        public virtual int FranchiseId { get; set; }
+        public int FranchiseId { get; set; }
         public Franchise Franchise { get; set; }
-        public List<Movie> Movies { get; set;}
+        public List<Character> Characters { get; set;}
     }
 }
