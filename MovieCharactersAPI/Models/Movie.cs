@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Hosting;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
 
 namespace MovieCharactersAPI.Models
 {
@@ -6,6 +9,19 @@ namespace MovieCharactersAPI.Models
     {
         public int Id { get; set; }
         [MaxLength(40)]
-        public string Name { get; set; }
+        public string Title { get; set; }
+        [MaxLength(100)]
+        //Genre(just a simple string of comma separated genres, there is no genre modelling required as a base)
+        public string Genre { get; set; }
+        public int ReleaseYear { get; set; }
+        [MaxLength(40)]
+        public string Director { get; set; }
+        //• Picture(URL to a movie poster)
+        public string Picture { get; set; }
+        //• Trailer(YouTube link most likely)
+        public string Trailer { get; set; }
+        public virtual int FranchiseId { get; set; }
+        public Franchise Franchise { get; set; }
+        public List<Movie> Movies { get; set;}
     }
 }
