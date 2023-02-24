@@ -13,12 +13,12 @@ namespace MovieCharactersAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>().HasData(
-                new Movie { Id = 1, Name = "Filips Adventure"},
-                new Movie { Id = 2, Name = "Tommy's Wedding" }
+                new Movie { Id = 1, Title = "Filips Adventure"},
+                new Movie { Id = 2, Title = "Tommy's Wedding" }
                 );
             modelBuilder.Entity<Movie>().HasData(
-                new Character { Id = 1, Name = "Filip" },
-                new Character { Id = 2, Name = "Tommy" }
+                new Character { Id = 1, FullName = "Filip" },
+                new Character { Id = 2, FullName = "Tommy" }
                 );
             modelBuilder.Entity<Movie>().HasData(
                 new Franchise { Id = 1, Name = "Experis Cinematic Universe" }
