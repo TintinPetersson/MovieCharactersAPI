@@ -13,15 +13,15 @@ namespace MovieCharactersAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>().HasData(
-                new Movie { Id = 1, Title = "Filips Adventure"},
-                new Movie { Id = 2, Title = "Tommy's Wedding" }
+                new Movie { Id = 1, Title = "Filips Adventure", Genre = "Action, Adventure", ReleaseYear = 2001, Director = "Tintin The Big", Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg", Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw", FranchiseId = 1},
+                new Movie { Id = 2, Title = "Tommy's Wedding", Genre = "Drama, Comedy", ReleaseYear = 2010, Director = "Tintin The Big", Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg", Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw", FranchiseId = 1}
                 );
-            modelBuilder.Entity<Movie>().HasData(
-                new Character { Id = 1, FullName = "Filip" },
-                new Character { Id = 2, FullName = "Tommy" }
+            modelBuilder.Entity<Character>().HasData(
+                new Character { Id = 1, FullName = "Filip", Alias = "FillePille", Gender = Gender.Other, Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" },
+                new Character { Id = 2, FullName = "Tommy", Alias = "TommyBoy", Gender = Gender.Male, Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" }
                 );
-            modelBuilder.Entity<Movie>().HasData(
-                new Franchise { Id = 1, Name = "Experis Cinematic Universe" }
+            modelBuilder.Entity<Franchise>().HasData(
+                new Franchise { Id = 1, Name = "Experis Cinematic Universe", Description = "Big Universe with Big ideas." }
                 );
         }
     }
