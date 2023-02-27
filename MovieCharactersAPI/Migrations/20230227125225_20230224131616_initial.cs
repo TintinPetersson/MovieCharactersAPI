@@ -2,12 +2,10 @@
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace MovieCharactersAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class _20230224131616_initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,27 +90,9 @@ namespace MovieCharactersAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Characters",
-                columns: new[] { "Id", "Alias", "FullName", "Gender", "Photo" },
-                values: new object[,]
-                {
-                    { 1, "FillePille", "Filip", 2, "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" },
-                    { 2, "TommyBoy", "Tommy", 0, "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Franchises",
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[] { 1, "Big Universe with Big ideas.", "Experis Cinematic Universe" });
-
-            migrationBuilder.InsertData(
-                table: "Movies",
-                columns: new[] { "Id", "Director", "FranchiseId", "Genre", "Picture", "ReleaseYear", "Title", "Trailer" },
-                values: new object[,]
-                {
-                    { 1, "Tintin The Big", 0, "Action, Adventure", "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg", 2001, "Filips Adventure", "https://www.youtube.com/watch?v=OMGBIQHODhw" },
-                    { 2, "Tintin The Big", 0, "Drama, Comedy", "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg", 2010, "Tommy's Wedding", "https://www.youtube.com/watch?v=OMGBIQHODhw" }
-                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterMovie_MoviesId",

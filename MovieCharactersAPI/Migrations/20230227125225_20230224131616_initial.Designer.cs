@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieCharactersAPI.Models;
 
@@ -10,9 +11,11 @@ using MovieCharactersAPI.Models;
 namespace MovieCharactersAPI.Migrations
 {
     [DbContext(typeof(MovieCharactersDbContext))]
-    partial class MovieCharactersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230227125225_20230224131616_initial")]
+    partial class _20230224131616_initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,32 +66,6 @@ namespace MovieCharactersAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Characters");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Alias = "FillePille",
-                            FullName = "Filip",
-                            Gender = 2,
-                            Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Alias = "TommyBoy",
-                            FullName = "Tommy",
-                            Gender = 0,
-                            Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Alias = "mr100",
-                            FullName = "Tintin",
-                            Gender = 1,
-                            Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg"
-                        });
                 });
 
             modelBuilder.Entity("MovieCharactersAPI.Models.Franchise", b =>
@@ -119,12 +96,6 @@ namespace MovieCharactersAPI.Migrations
                             Id = 1,
                             Description = "Big Universe with Big ideas.",
                             Name = "Experis Cinematic Universe"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Tintins Yh adventures",
-                            Name = "Yh Cinematic Universe"
                         });
                 });
 
@@ -170,41 +141,6 @@ namespace MovieCharactersAPI.Migrations
                     b.HasIndex("FranchiseId");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Director = "Tintin The Big",
-                            FranchiseId = 1,
-                            Genre = "Action, Adventure",
-                            Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg",
-                            ReleaseYear = 2001,
-                            Title = "Filips Adventure",
-                            Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Director = "Tintin The Big",
-                            FranchiseId = 1,
-                            Genre = "Drama, Comedy",
-                            Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg",
-                            ReleaseYear = 2010,
-                            Title = "Tommy's Wedding",
-                            Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Director = "Albert Einstein",
-                            FranchiseId = 2,
-                            Genre = "Action, Comedy",
-                            Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg",
-                            ReleaseYear = 2012,
-                            Title = "Tintin",
-                            Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw"
-                        });
                 });
 
             modelBuilder.Entity("CharacterMovie", b =>
