@@ -11,8 +11,8 @@ using MovieCharactersAPI.Models;
 namespace MovieCharactersAPI.Migrations
 {
     [DbContext(typeof(MovieCharactersDbContext))]
-    [Migration("20230224131616_initial")]
-    partial class initial
+    [Migration("20230227133034_Added_More_Seed_Data")]
+    partial class Added_More_Seed_Data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,14 @@ namespace MovieCharactersAPI.Migrations
                             FullName = "Tommy",
                             Gender = 0,
                             Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Alias = "mr100",
+                            FullName = "Tintin",
+                            Gender = 1,
+                            Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg"
                         });
                 });
 
@@ -114,6 +122,12 @@ namespace MovieCharactersAPI.Migrations
                             Id = 1,
                             Description = "Big Universe with Big ideas.",
                             Name = "Experis Cinematic Universe"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Tintins Yh adventures",
+                            Name = "Yh Cinematic Universe"
                         });
                 });
 
@@ -165,7 +179,7 @@ namespace MovieCharactersAPI.Migrations
                         {
                             Id = 1,
                             Director = "Tintin The Big",
-                            FranchiseId = 0,
+                            FranchiseId = 1,
                             Genre = "Action, Adventure",
                             Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg",
                             ReleaseYear = 2001,
@@ -176,11 +190,22 @@ namespace MovieCharactersAPI.Migrations
                         {
                             Id = 2,
                             Director = "Tintin The Big",
-                            FranchiseId = 0,
+                            FranchiseId = 1,
                             Genre = "Drama, Comedy",
                             Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg",
                             ReleaseYear = 2010,
                             Title = "Tommy's Wedding",
+                            Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Director = "Albert Einstein",
+                            FranchiseId = 2,
+                            Genre = "Action, Comedy",
+                            Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg",
+                            ReleaseYear = 2012,
+                            Title = "Tintin",
                             Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw"
                         });
                 });
