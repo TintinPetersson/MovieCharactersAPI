@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Services;
@@ -31,6 +24,11 @@ namespace MovieCharactersAPI.Controllers
         }
 
         // GET: api/Movies/5
+        /// <summary>
+        ///     Gets movie by id
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
@@ -59,7 +57,7 @@ namespace MovieCharactersAPI.Controllers
 
             try
             {
-                await _movieService.UpdateMovie(movie);
+                await _movieService.UpdateMovie(movie); // should we have 
             }
             catch (MovieNotFoundException ex)
             {

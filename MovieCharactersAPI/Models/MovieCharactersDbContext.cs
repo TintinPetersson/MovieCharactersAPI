@@ -18,7 +18,7 @@ namespace MovieCharactersAPI.Models
                 new Movie { Id = 3, Title = "Tintin", Genre = "Action, Comedy", ReleaseYear = 2012, Director = "Albert Einstein", Picture = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg", Trailer = "https://www.youtube.com/watch?v=OMGBIQHODhw", FranchiseId = 2 }
                 );
             modelBuilder.Entity<Character>().HasData(
-                new Character { Id = 1, FullName = "Filip", Alias = "FillePille", Gender = Gender.Other, Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" },
+                new Character { Id = 1, FullName = "Filip", Alias = "FillePille", Gender = Gender.Other, Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg", Movies =  },
                 new Character { Id = 2, FullName = "Tommy", Alias = "TommyBoy", Gender = Gender.Male, Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" },
                 new Character { Id = 3, FullName = "Tintin", Alias = "mr100", Gender = Gender.Female, Photo = "https://i.ytimg.com/vi/OMGBIQHODhw/maxresdefault.jpg" }
                 );
