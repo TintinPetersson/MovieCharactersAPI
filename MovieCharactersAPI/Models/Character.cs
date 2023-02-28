@@ -8,8 +8,12 @@ namespace MovieCharactersAPI.Models
         Female,
         Other
     }
-    public class Character
+    public partial class Character
     {
+        public Character()
+        {
+            Movies = new List<Movie>();
+        }
         public int Id { get; set; }
         [MaxLength(40)]
         public string FullName { get; set; }
@@ -18,6 +22,6 @@ namespace MovieCharactersAPI.Models
         public Gender Gender { get; set; }
         //Picture (URL to photo – do not store an image)
         public string Photo { get; set; }
-        public List<Movie> Movies { get; set; }
+        public virtual ICollection<Movie> Movies { get; set; }
     }
 }

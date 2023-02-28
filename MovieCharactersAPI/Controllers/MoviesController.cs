@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using MovieCharactersAPI.Dtos.Movies;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Services;
@@ -17,20 +12,27 @@ namespace MovieCharactersAPI.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IMapper _mapper;
 
-        public MoviesController(IMovieService movieService)
+        public MoviesController(IMovieService movieService, IMapper mapper)
         {
             _movieService = movieService;
+            _mapper = mapper;
         }
 
         // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            return Ok(await _movieService.GetAllMovies());
+            return Ok(_mapper.Map<List<MovieDto>>(await _movieService.GetAllMovies()));
         }
 
         // GET: api/Movies/5
+        /// <summary>
+        ///     Gets movie by id
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
@@ -59,7 +61,7 @@ namespace MovieCharactersAPI.Controllers
 
             try
             {
-                await _movieService.UpdateMovie(movie);
+                await _movieService.UpdateMovie(movie); // should we have 
             }
             catch (MovieNotFoundException ex)
             {

@@ -5,8 +5,12 @@ using System.Security.Policy;
 
 namespace MovieCharactersAPI.Models
 {
-    public class Movie
+    public partial class Movie
     {
+        public Movie()
+        {
+            Characters = new HashSet<Character>();
+        }
         public int Id { get; set; }
         [MaxLength(40)]
         public string Title { get; set; }
@@ -16,12 +20,10 @@ namespace MovieCharactersAPI.Models
         public int ReleaseYear { get; set; }
         [MaxLength(40)]
         public string Director { get; set; }
-        //• Picture(URL to a movie poster)
         public string Picture { get; set; }
-        //• Trailer(YouTube link most likely)
         public string Trailer { get; set; }
-        public int FranchiseId { get; set; }
-        public Franchise Franchise { get; set; }
-        public List<Character> Characters { get; set;}
+        public int? FranchiseId { get; set; }
+        public virtual Franchise? Franchise { get; set; }
+        public virtual ICollection<Character> Characters { get; set;}
     }
 }

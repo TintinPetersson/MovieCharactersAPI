@@ -12,9 +12,11 @@ namespace MovieCharactersAPI.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovies()
+        public async Task<ICollection<Movie>> GetAllMovies()
         {
-            return await _context.Movies.ToListAsync();   
+            return await _context.Movies
+             .Include(p => p.Characters)
+             .ToListAsync();
         }
         public async Task<Movie> GetMovieById(int id)
         {
