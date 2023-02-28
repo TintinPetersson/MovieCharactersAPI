@@ -4,7 +4,7 @@ namespace MovieCharactersAPI.Services
 {
     public interface IMovieService
     {
-        Task<IEnumerable<Movie>> GetAllMovies();
+        Task<ICollection<Movie>> GetAllMovies();
         Task<Movie> GetMovieById(int id);
         Task<Movie> AddMovie(Movie movie);
         Task DeleteMovie(int id);

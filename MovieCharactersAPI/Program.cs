@@ -14,6 +14,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+// Automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Adding logging through ILogger
+builder.Host.ConfigureLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+});
+
 
 // Build the web application with all the dependences
 var app = builder.Build();

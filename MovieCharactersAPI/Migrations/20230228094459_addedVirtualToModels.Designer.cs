@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieCharactersAPI.Models;
 
@@ -11,9 +12,11 @@ using MovieCharactersAPI.Models;
 namespace MovieCharactersAPI.Migrations
 {
     [DbContext(typeof(MovieCharactersDbContext))]
-    partial class MovieCharactersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230228094459_addedVirtualToModels")]
+    partial class addedVirtualToModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,39 +27,17 @@ namespace MovieCharactersAPI.Migrations
 
             modelBuilder.Entity("CharacterMovie", b =>
                 {
-                    b.Property<int>("MovieId")
+                    b.Property<int>("CharactersId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CharacterId")
+                    b.Property<int>("MoviesId")
                         .HasColumnType("int");
 
-                    b.HasKey("MovieId", "CharacterId");
+                    b.HasKey("CharactersId", "MoviesId");
 
-                    b.HasIndex("CharacterId");
+                    b.HasIndex("MoviesId");
 
                     b.ToTable("CharacterMovie");
-
-                    b.HasData(
-                        new
-                        {
-                            MovieId = 1,
-                            CharacterId = 1
-                        },
-                        new
-                        {
-                            MovieId = 1,
-                            CharacterId = 2
-                        },
-                        new
-                        {
-                            MovieId = 2,
-                            CharacterId = 2
-                        },
-                        new
-                        {
-                            MovieId = 3,
-                            CharacterId = 3
-                        });
                 });
 
             modelBuilder.Entity("MovieCharactersAPI.Models.Character", b =>
@@ -234,13 +215,13 @@ namespace MovieCharactersAPI.Migrations
                 {
                     b.HasOne("MovieCharactersAPI.Models.Character", null)
                         .WithMany()
-                        .HasForeignKey("CharacterId")
+                        .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MovieCharactersAPI.Models.Movie", null)
                         .WithMany()
-                        .HasForeignKey("MovieId")
+                        .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
