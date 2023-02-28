@@ -48,11 +48,21 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
+      
+        // POST: api/Movies
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        {
+            Movie newMovie = _mapper.Map<Movie>(movie);
+            await _movieService.AddMovie(newMovie);
+            return CreatedAtAction("GetMovie", new { id = movie.Id }, newMovie);
+        }
 
         // PUT: api/Movies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+        public async Task<IActionResult> PutMovie(int id, MoviePutDto movie)
         {
             if (id != movie.Id)
             {
@@ -61,7 +71,9 @@ namespace MovieCharactersAPI.Controllers
 
             try
             {
-                await _movieService.UpdateMovie(movie); // should we have 
+                await _movieService.UpdateMovie(
+                    _mapper.Map<Movie>(movie));
+                return NoContent();
             }
             catch (MovieNotFoundException ex)
             {
@@ -73,15 +85,6 @@ namespace MovieCharactersAPI.Controllers
 
             return NoContent();
         }
-
-        // POST: api/Movies
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
-        {
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, await _movieService.AddMovie(movie));
-        }
-
         // DELETE: api/Movies/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
