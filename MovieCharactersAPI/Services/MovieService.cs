@@ -28,12 +28,20 @@ namespace MovieCharactersAPI.Services
             }
             return movie;
         }
-        public async Task<Movie> AddMovie(Movie movie)
+        public async Task AddMovie(Movie movie)
         {
-            _context.Movies.Add(movie);
+            await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
-
-            return movie;
+        }
+      
+        public async Task UpdateMovie(Movie movie)
+        {
+            if (!await MovieExists(movie.Id))
+            {
+                throw new MovieNotFoundException(movie.Id);
+            }
+            _context.Entry(movie).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteMovie(int id)
         {
@@ -46,15 +54,9 @@ namespace MovieCharactersAPI.Services
             _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
         }
-        public async Task<Movie> UpdateMovie(Movie movie)
+        private async Task<bool> MovieExists(int id)
         {
-            var searchMovie = await _context.Movies.FindAsync(movie.Id);
-            if (searchMovie == null)
-            {
-                throw new MovieNotFoundException(movie.Id);
-            }
-            await _context.SaveChangesAsync();
-            return movie;
+            return await _context.Movies.AnyAsync(m => m.Id == id);
         }
     }
 }

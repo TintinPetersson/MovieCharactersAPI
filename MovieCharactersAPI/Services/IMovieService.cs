@@ -6,8 +6,8 @@ namespace MovieCharactersAPI.Services
     {
         Task<ICollection<Movie>> GetAllMovies();
         Task<Movie> GetMovieById(int id);
-        Task<Movie> AddMovie(Movie movie);
+        Task AddMovie(Movie movie);
+        Task UpdateMovie(Movie movie);
         Task DeleteMovie(int id);
-        Task<Movie> UpdateMovie(Movie movie);
     }
 }
