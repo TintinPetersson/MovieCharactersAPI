@@ -24,7 +24,6 @@ namespace MovieCharactersAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Movie/movies /// [TODO]: Change this route to movies!!!
         /// <summary>
         ///     Gets all movies stored in Db
         /// </summary>
@@ -32,10 +31,9 @@ namespace MovieCharactersAPI.Controllers
         [HttpGet("movies")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            return Ok(_mapper.Map<ICollection<Movie>>(await _movieService.GetAllMovies())); // TODO: This function is broken 
+            return Ok(_mapper.Map<ICollection<MovieDto>>(await _movieService.GetAllMovies()));
         }
 
-        // GET: api/Movie/5
         /// <summary>
         ///     Gets specific movie by id
         /// </summary>
@@ -57,7 +55,6 @@ namespace MovieCharactersAPI.Controllers
             }
         }
 
-        // POST: api/Movies
         /// <summary>
         ///     Inserts a new move to Db
         /// </summary>
@@ -71,7 +68,6 @@ namespace MovieCharactersAPI.Controllers
             return CreatedAtAction("GetMovie", new { id = movie.Id }, newMovie);
         }
 
-        // PUT: api/Movies/5
         /// <summary>
         ///     Updates a existing move in Db
         /// </summary>
@@ -101,7 +97,6 @@ namespace MovieCharactersAPI.Controllers
 
             return NoContent();
         }
-        // DELETE: api/Movies/5
         /// <summary>
         ///     Deletes a existing move in Db
         /// </summary>

@@ -13,6 +13,6 @@ namespace MovieCharactersAPI.Dtos.Movies
         public string Picture { get; set; }
         public string Trailer { get; set; }
         public string Franchise { get; set; }
-        public List<string> Characters { get; set; } = null!;
+        public List<string> Characters { get; set; }
     }
 }
