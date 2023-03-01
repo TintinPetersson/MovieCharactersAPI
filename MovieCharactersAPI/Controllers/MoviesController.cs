@@ -4,11 +4,15 @@ using MovieCharactersAPI.Dtos.Movies;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Services;
+using System.Net.Mime;
 
 namespace MovieCharactersAPI.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/movie")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
@@ -20,16 +24,20 @@ namespace MovieCharactersAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Movies
-        [HttpGet]
+        // GET: api/Movie/movies /// [TODO]: Change this route to movies!!!
+        /// <summary>
+        ///     Gets all movies stored in Db
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("movies")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            return Ok(_mapper.Map<List<MovieDto>>(await _movieService.GetAllMovies()));
+            return Ok(_mapper.Map<ICollection<Movie>>(await _movieService.GetAllMovies())); // TODO: This function is broken 
         }
 
-        // GET: api/Movies/5
+        // GET: api/Movie/5
         /// <summary>
-        ///     Gets movie by id
+        ///     Gets specific movie by id
         /// </summary>
         /// <param name="id">Movie id</param>
         /// <returns></returns>
@@ -48,9 +56,13 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
-      
+
         // POST: api/Movies
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///     Inserts a new move to Db
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
@@ -60,7 +72,11 @@ namespace MovieCharactersAPI.Controllers
         }
 
         // PUT: api/Movies/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///     Updates a existing move in Db
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MoviePutDto movie)
         {
@@ -86,6 +102,11 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
         // DELETE: api/Movies/5
+        /// <summary>
+        ///     Deletes a existing move in Db
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
