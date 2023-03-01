@@ -11,13 +11,11 @@ namespace MovieCharactersAPI.Services
         {
             _context = context;
         }
-
         public async Task<ICollection<Movie>> GetAllMovies()
         {
-            return await _context.Movies.ToListAsync();  // TODO: This function is broken
-            //return await _context.Movies
-             //.Include(p => p.Characters)
-             //.ToListAsync();
+            return await _context.Movies
+             .Include(p => p.Characters)
+             .ToListAsync();
         }
         public async Task<Movie> GetMovieById(int id)
         {
@@ -34,7 +32,6 @@ namespace MovieCharactersAPI.Services
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
         }
-      
         public async Task UpdateMovie(Movie movie)
         {
             if (!await MovieExists(movie.Id))
