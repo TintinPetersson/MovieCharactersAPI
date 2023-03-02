@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MovieCharactersAPI.Dtos.Characters;
 using MovieCharactersAPI.Dtos.Movies;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
-using MovieCharactersAPI.Services.Characters;
 using MovieCharactersAPI.Services.Movies;
-using System.Net;
 using System.Net.Mime;
 
 namespace MovieCharactersAPI.Controllers
@@ -26,7 +23,6 @@ namespace MovieCharactersAPI.Controllers
             _movieService = movieService;
             _mapper = mapper;
         }
-
         /// <summary>
         ///     Gets all movies stored in Db
         /// </summary>
@@ -36,7 +32,6 @@ namespace MovieCharactersAPI.Controllers
         {
             return Ok(_mapper.Map<ICollection<MovieDto>>(await _movieService.GetAllMovies()));
         }
-
         /// <summary>
         ///     Gets specific movie by id
         /// </summary>
@@ -57,19 +52,17 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
-
         /// <summary>
         ///     Inserts a new move to Db
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        public async Task<ActionResult<Movie>> PostMovie(MoviePostDto movie)
         {
             Movie newMovie = _mapper.Map<Movie>(movie);
             await _movieService.AddMovie(newMovie);
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, newMovie);
+            return CreatedAtAction("GetMovie", new { id = newMovie.Id }, newMovie);
         }
-
         /// <summary>
         ///     Updates a existing move in Db
         /// </summary>
@@ -98,7 +91,6 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
-
         [HttpPut("{id}/characters")]
         public async Task<IActionResult> UpdateCharactersInMovie(int[] characterIds, int id)
         {
@@ -115,7 +107,6 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
-
         /// <summary>
         ///     Deletes a existing move in Db
         /// </summary>

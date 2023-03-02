@@ -1,107 +1,116 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Net.Mime;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using MovieCharactersAPI.Dtos.Franchises;
+using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
+using MovieCharactersAPI.Services.Franchises;
 
 namespace MovieCharactersAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class FranchisesController : ControllerBase
     {
-        private readonly MovieCharactersDbContext _context;
+        private readonly IFranchiseService _franchiseService;
+        private readonly IMapper _mapper;
 
-        public FranchisesController(MovieCharactersDbContext context)
+        public FranchisesController(IFranchiseService franchiseService, IMapper mapper)
         {
-            _context = context;
+            _franchiseService = franchiseService;
+            _mapper = mapper;
         }
-
         // GET: api/Franchises
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
         {
-            return await _context.Franchises.ToListAsync();
+            return Ok(_mapper.Map<ICollection<FranchiseDto>>(await _franchiseService.GetAllFranchises()));
         }
-
         // GET: api/Franchises/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Franchise>> GetFranchise(int id)
         {
-            var franchise = await _context.Franchises.FindAsync(id);
-
-            if (franchise == null)
+            try
             {
-                return NotFound();
+                return await _franchiseService.GetFranchiseById(id);
             }
-
-            return franchise;
+            catch (FranchiseNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
         }
-
         // PUT: api/Franchises/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
+        public async Task<IActionResult> PutFranchise(int id, FranchisePutDto franchise)
         {
             if (id != franchise.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(franchise).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _franchiseService.UpdateFranchise(
+                    _mapper.Map<Franchise>(franchise));
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (FranchiseNotFoundException ex)
             {
-                if (!FranchiseExists(id))
+                return NotFound(new ProblemDetails
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Detail = ex.Message
+                });
             }
-
-            return NoContent();
         }
 
         // POST: api/Franchises
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
+        public async Task<ActionResult<Franchise>> PostFranchise(FranchisePostDto franchise)
         {
-            _context.Franchises.Add(franchise);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFranchise", new { id = franchise.Id }, franchise);
+            Franchise newFranchise = _mapper.Map<Franchise>(franchise);
+            await _franchiseService.AddFranchise(newFranchise);
+            return CreatedAtAction("GetFranchise", new { id = newFranchise.Id }, newFranchise);
         }
-
+        [HttpPut("{id}/movies")]
+        public async Task<IActionResult> UpdateMoviesInFranchise(int[] movieIds, int id)
+        {
+            try
+            {
+                await _franchiseService.UpdateMoviesFromFranchise(movieIds, id);
+                return NoContent();
+            }
+            catch (FranchiseNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+        }
         // DELETE: api/Franchises/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {
-            var franchise = await _context.Franchises.FindAsync(id);
-            if (franchise == null)
+            try
             {
-                return NotFound();
+                await _franchiseService.DeleteFranchise(id);
             }
-
-            _context.Franchises.Remove(franchise);
-            await _context.SaveChangesAsync();
-
+            catch (FranchiseNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
             return NoContent();
-        }
-
-        private bool FranchiseExists(int id)
-        {
-            return _context.Franchises.Any(e => e.Id == id);
         }
     }
 }
