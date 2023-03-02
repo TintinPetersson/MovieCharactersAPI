@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieCharactersAPI.Dtos.Characters;
+using MovieCharactersAPI.Dtos.Movies;
+using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
+using MovieCharactersAPI.Services.Characters;
 
 namespace MovieCharactersAPI.Controllers
 {
@@ -13,63 +18,62 @@ namespace MovieCharactersAPI.Controllers
     [ApiController]
     public class CharactersController : ControllerBase
     {
-        private readonly MovieCharactersDbContext _context;
+        private readonly CharacterService _characterService;
+        private readonly IMapper _mapper;
 
-        public CharactersController(MovieCharactersDbContext context)
+        public CharactersController(CharacterService characterService, IMapper mapper)
         {
-            _context = context;
+            _characterService = characterService;
+            _mapper = mapper;
         }
 
         // GET: api/Characters
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
         {
-            return await _context.Characters.ToListAsync();
+            return Ok(_mapper.Map<ICollection<CharacterDTO>>(await _characterService.GetAllCharacters()));
         }
 
         // GET: api/Characters/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Character>> GetCharacter(int id)
         {
-            var character = await _context.Characters.FindAsync(id);
-
-            if (character == null)
+            try
             {
-                return NotFound();
+                return await _characterService.GetCharacterById(id);
             }
-
-            return character;
+            catch (CharacterNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
         }
 
         // PUT: api/Characters/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        public async Task<IActionResult> PutCharacter(int id, CharacterDTO character)
         {
             if (id != character.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(character).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _characterService.UpdateCharacter(
+                    _mapper.Map<Character>(character));
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (CharacterNotFoundException ex)
             {
-                if (!CharacterExists(id))
+                return NotFound(new ProblemDetails
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Detail = ex.Message
+                });
             }
-
-            return NoContent();
         }
 
         // POST: api/Characters
@@ -77,31 +81,27 @@ namespace MovieCharactersAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
-            _context.Characters.Add(character);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
+            Character newCharacter = _mapper.Map<Character>(character);
+            await _characterService.AddCharacter(newCharacter);
+            return CreatedAtAction("GetCharacter", new { id = character.Id }, newCharacter);
         }
 
         // DELETE: api/Characters/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
-            var character = await _context.Characters.FindAsync(id);
-            if (character == null)
+            try
             {
-                return NotFound();
+                await _characterService.DeleteCharacter(id);
             }
-
-            _context.Characters.Remove(character);
-            await _context.SaveChangesAsync();
-
+            catch (CharacterNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
             return NoContent();
-        }
-
-        private bool CharacterExists(int id)
-        {
-            return _context.Characters.Any(e => e.Id == id);
         }
     }
 }

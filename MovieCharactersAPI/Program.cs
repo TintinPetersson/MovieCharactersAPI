@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieCharactersAPI.Models;
+using MovieCharactersAPI.Services.Characters;
 using MovieCharactersAPI.Services.Movies;
 using System.Reflection;
 
@@ -40,6 +41,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddTransient<IMovieService, MovieService>();
+builder.Services.AddTransient<ICharacterService, CharacterService>();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 // Automapper

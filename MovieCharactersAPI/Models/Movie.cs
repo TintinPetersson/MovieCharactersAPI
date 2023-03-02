@@ -9,13 +9,12 @@ namespace MovieCharactersAPI.Models
     {
         public Movie()
         {
-            Characters = new HashSet<Character>();
+            Characters = new List<Character>();
         }
         public int Id { get; set; }
         [MaxLength(40)]
         public string Title { get; set; }
         [MaxLength(100)]
-        //Genre(just a simple string of comma separated genres, there is no genre modelling required as a base)
         public string Genre { get; set; }
         public int ReleaseYear { get; set; }
         [MaxLength(40)]

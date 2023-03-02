@@ -1,31 +1,60 @@
-﻿using MovieCharactersAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieCharactersAPI.Exceptions;
+using MovieCharactersAPI.Models;
 
 namespace MovieCharactersAPI.Services.Characters
 {
     public class CharacterService : ICharacterService
     {
-        public Task AddCharacter(Character character)
+        private readonly MovieCharactersDbContext _context;
+        public CharacterService(MovieCharactersDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
+        public async Task AddCharacter(Character character)
+        {
+            await _context.Characters.AddAsync(character);
+            await _context.SaveChangesAsync();
+        }
+        public async Task DeleteCharacter(int id)
+        {
+            var character = await _context.Characters.FindAsync(id);
+            if (character == null)
+            {
+                throw new CharacterNotFoundException(id);
+            }
 
-        public Task DeleteCharacter(int id)
-        {
-            throw new NotImplementedException();
+            _context.Characters.Remove(character);
+            await _context.SaveChangesAsync();
         }
+        public async Task<ICollection<Character>> GetAllCharacters()
+        {
+            return await _context.Characters
+             .Include(p => p.Movies)
+             .ToListAsync();
+        }
+        public async Task<Character> GetCharacterById(int id)
+        {
+            var character = await _context.Characters.FindAsync(id);
 
-        public Task<ICollection<Movie>> GetAllCharacters()
-        {
-            throw new NotImplementedException();
+            if (character == null)
+            {
+                throw new CharacterNotFoundException(id);
+            }
+            return character;
         }
-
-        public Task<Movie> GetCharacterById(int id)
+        public async Task UpdateCharacter(Character character)
         {
-            throw new NotImplementedException();
+            if (!await CharacterExists(character.Id))
+            {
+                throw new CharacterNotFoundException(character.Id);
+            }
+            _context.Entry(character).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
-        public Task UpdateCharacter(Character character)
+        private async Task<bool> CharacterExists(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Characters.AnyAsync(c => c.Id == id);
         }
     }
 }
