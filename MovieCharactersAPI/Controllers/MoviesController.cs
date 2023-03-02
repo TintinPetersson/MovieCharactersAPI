@@ -23,6 +23,7 @@ namespace MovieCharactersAPI.Controllers
             _movieService = movieService;
             _mapper = mapper;
         }
+        
         /// <summary>
         ///     Gets all movies stored in Db
         /// </summary>
@@ -32,6 +33,7 @@ namespace MovieCharactersAPI.Controllers
         {
             return Ok(_mapper.Map<ICollection<MovieDto>>(await _movieService.GetAllMovies()));
         }
+
         /// <summary>
         ///     Gets specific movie by id
         /// </summary>
@@ -52,9 +54,11 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
+       
         /// <summary>
-        ///     Inserts a new move to Db
+        ///     Inserts a new movie to Db
         /// </summary>
+        /// <param name="movie">Movie information like title, genre mm, see example values below: </param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(MoviePostDto movie)
@@ -63,11 +67,12 @@ namespace MovieCharactersAPI.Controllers
             await _movieService.AddMovie(newMovie);
             return CreatedAtAction("GetMovie", new { id = newMovie.Id }, newMovie);
         }
+
         /// <summary>
-        ///     Updates a existing move in Db
+        ///     Updates a existing movie in Db
         /// </summary>
         /// <param name="id">Movie id</param>
-        /// <param name="movie"></param>
+        /// <param name="movie">Movie information like title, genre mm, see example values below: </param>
         /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MoviePutDto movie)
@@ -91,6 +96,13 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
+
+        /// <summary>
+        ///     Updates characters that stars in specified movie
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <param name="characterIds">Enter a list of charactersIds that stars in the movie</param>
+        /// <returns></returns>
         [HttpPut("{id}/characters")]
         public async Task<IActionResult> UpdateCharactersInMovie(int[] characterIds, int id)
         {
@@ -107,8 +119,9 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
+
         /// <summary>
-        ///     Deletes a existing move in Db
+        ///     Deletes a existing movie in Db
         /// </summary>
         /// <param name="id">Movie id</param>
         /// <returns></returns>
