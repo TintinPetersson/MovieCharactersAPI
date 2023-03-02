@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Services.Characters;
+using MovieCharactersAPI.Services.Franchises;
 using MovieCharactersAPI.Services.Movies;
 using System.Reflection;
 
@@ -42,6 +43,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddTransient<ICharacterService, CharacterService>();
+builder.Services.AddTransient<IFranchiseService, FranchiseService>();
+
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 // Automapper
