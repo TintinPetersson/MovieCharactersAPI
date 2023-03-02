@@ -1,0 +1,9 @@
+﻿namespace MovieCharactersAPI.Exceptions
+{
+    public class FranchiseNotFoundException: Exception
+    {
+        public FranchiseNotFoundException(int id) : base($"Movie with id: {id} was not found.")
+        {
+        }
+    }
+}

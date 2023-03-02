@@ -41,7 +41,7 @@ namespace MovieCharactersAPI.Services.Movies
             _context.Entry(movie).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateCharactersAsync(int[] characterIds, int movieId)
+        public async Task UpdateCharactersFromMovie(int[] characterIds, int movieId)
         {
             if (!await MovieExists(movieId))
             {

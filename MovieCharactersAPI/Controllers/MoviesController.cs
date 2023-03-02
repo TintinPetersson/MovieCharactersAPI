@@ -104,7 +104,7 @@ namespace MovieCharactersAPI.Controllers
         {
             try
             {
-                await _movieService.UpdateCharactersAsync(characterIds, id);
+                await _movieService.UpdateCharactersFromMovie(characterIds, id);
                 return NoContent();
             }
             catch (MovieNotFoundException ex)
