@@ -10,15 +10,12 @@ namespace MovieCharactersAPI.Profiles
         {
             CreateMap<MoviePostDto, Movie>();
             CreateMap<MoviePutDto, Movie>();
-         
 
             CreateMap<Movie, MovieDto>()
             .ForMember(dto => dto.Characters, opt => opt
             .MapFrom(p => p.Characters.Select(s => s.FullName).ToList()))
             .ForMember(dto => dto.Franchise, opt => opt
             .MapFrom(p => p.FranchiseId));
-
-
         }
     }
 }

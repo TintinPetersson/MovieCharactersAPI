@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieCharactersAPI.Dtos.Characters;
 using MovieCharactersAPI.Dtos.Movies;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
-using MovieCharactersAPI.Services;
+using MovieCharactersAPI.Services.Characters;
+using MovieCharactersAPI.Services.Movies;
+using System.Net;
 using System.Net.Mime;
 
 namespace MovieCharactersAPI.Controllers
@@ -58,7 +61,6 @@ namespace MovieCharactersAPI.Controllers
         /// <summary>
         ///     Inserts a new move to Db
         /// </summary>
-        /// <param name="id">Movie id</param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
@@ -72,6 +74,7 @@ namespace MovieCharactersAPI.Controllers
         ///     Updates a existing move in Db
         /// </summary>
         /// <param name="id">Movie id</param>
+        /// <param name="movie"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MoviePutDto movie)
@@ -94,9 +97,25 @@ namespace MovieCharactersAPI.Controllers
                     Detail = ex.Message
                 });
             }
-
-            return NoContent();
         }
+
+        [HttpPut("{id}/characters")]
+        public async Task<IActionResult> UpdateCharactersInMovie(int[] characterIds, int id)
+        {
+            try
+            {
+                await _movieService.UpdateCharactersAsync(characterIds, id);
+                return NoContent();
+            }
+            catch (MovieNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+        }
+
         /// <summary>
         ///     Deletes a existing move in Db
         /// </summary>

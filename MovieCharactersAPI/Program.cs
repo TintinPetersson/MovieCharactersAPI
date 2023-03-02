@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieCharactersAPI.Models;
-using MovieCharactersAPI.Services;
+using MovieCharactersAPI.Services.Movies;
 using System.Reflection;
 
 // Create the Web application
