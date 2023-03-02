@@ -1,6 +1,6 @@
 ﻿using MovieCharactersAPI.Models;
 
-namespace MovieCharactersAPI.Services
+namespace MovieCharactersAPI.Services.Movies
 {
     public interface IMovieService
     {
@@ -8,6 +8,7 @@ namespace MovieCharactersAPI.Services
         Task<Movie> GetMovieById(int id);
         Task AddMovie(Movie movie);
         Task UpdateMovie(Movie movie);
+        Task UpdateCharactersAsync(int[] characterIds, int movieId);
         Task DeleteMovie(int id);
     }
 }

@@ -2,7 +2,7 @@
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 
-namespace MovieCharactersAPI.Services
+namespace MovieCharactersAPI.Services.Movies
 {
     public class MovieService : IMovieService
     {
@@ -21,7 +21,7 @@ namespace MovieCharactersAPI.Services
         {
             var movie = await _context.Movies.FindAsync(id);
 
-            if(movie == null)
+            if (movie == null)
             {
                 throw new MovieNotFoundException(id);
             }
@@ -40,6 +40,29 @@ namespace MovieCharactersAPI.Services
             }
             _context.Entry(movie).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+        public async Task UpdateCharactersAsync(int[] characterIds, int movieId)
+        {
+            if (!await MovieExists(movieId))
+            {
+                throw new MovieNotFoundException(movieId);
+            }
+
+            List<Character> characters = characterIds
+                .ToList()
+                .Select(characterId => _context.Characters
+                .Where(c => c.Id == characterId).First())
+                .ToList();
+
+            Movie movie = await _context.Movies
+                .Where(m => m.Id == movieId)
+                .FirstAsync();
+
+            movie.Characters = characters;
+
+            _context.Entry(movie).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
         }
         public async Task DeleteMovie(int id)
         {
