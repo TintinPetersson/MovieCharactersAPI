@@ -8,7 +8,7 @@ using MovieCharactersAPI.Services.Franchises;
 
 namespace MovieCharactersAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]

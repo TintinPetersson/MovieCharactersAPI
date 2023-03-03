@@ -20,7 +20,6 @@ namespace MovieCharactersAPI.Models
         [MaxLength(40)]
         public string? Alias { get; set; }
         public Gender Gender { get; set; }
-        //Picture (URL to photo – do not store an image)
         public string Photo { get; set; }
         public virtual ICollection<Movie> Movies { get; set; }
     }
