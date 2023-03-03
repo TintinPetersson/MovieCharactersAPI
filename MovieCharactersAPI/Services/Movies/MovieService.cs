@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieCharactersAPI.Dtos.Movies;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 
@@ -14,7 +15,7 @@ namespace MovieCharactersAPI.Services.Movies
         public async Task<ICollection<Movie>> GetAllMovies()
         {
             return await _context.Movies
-             .Include(p => p.Characters)
+             .Include(m => m.Characters)
              .ToListAsync();
         }
         public async Task<Movie> GetMovieById(int id)

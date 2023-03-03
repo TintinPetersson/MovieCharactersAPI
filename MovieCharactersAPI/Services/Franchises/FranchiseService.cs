@@ -33,7 +33,7 @@ namespace MovieCharactersAPI.Services.Franchises
         public async Task<ICollection<Franchise>> GetAllFranchises()
         {
             return await _context.Franchises
-             .Include(p => p.Movies)
+             .Include(f => f.Movies)
              .ToListAsync();
         }
 

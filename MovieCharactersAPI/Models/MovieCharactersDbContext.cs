@@ -26,16 +26,16 @@ namespace MovieCharactersAPI.Models
                 new Franchise { Id = 2, Name = "Yh Cinematic Universe", Description = "Tintins Yh adventures" }
                 );
             modelBuilder.Entity<Movie>()
-               .HasMany(std => std.Characters)
-               .WithMany(sub => sub.Movies)
+               .HasMany(m => m.Characters)
+               .WithMany(c => c.Movies)
                .UsingEntity<Dictionary<string, object>>(
                    "CharacterMovie",
-                   l => l.HasOne<Character>().WithMany().HasForeignKey("CharacterId"),
-                   r => r.HasOne<Movie>().WithMany().HasForeignKey("MovieId"),
-                   je =>
+                   x => x.HasOne<Character>().WithMany().HasForeignKey("CharacterId"),
+                   y => y.HasOne<Movie>().WithMany().HasForeignKey("MovieId"),
+                   z =>
                    {
-                       je.HasKey("MovieId", "CharacterId");
-                       je.HasData(
+                       z.HasKey("MovieId", "CharacterId");
+                       z.HasData(
                            new { MovieId = 1, CharacterId = 1 },
                            new { MovieId = 1, CharacterId = 2 },
                            new { MovieId = 2, CharacterId = 2 },

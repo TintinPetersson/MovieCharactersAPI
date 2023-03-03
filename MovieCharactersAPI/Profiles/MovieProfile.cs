@@ -13,9 +13,9 @@ namespace MovieCharactersAPI.Profiles
 
             CreateMap<Movie, MovieDto>()
             .ForMember(dto => dto.Characters, opt => opt
-            .MapFrom(p => p.Characters.Select(s => s.FullName).ToList()))
+            .MapFrom(m => m.Characters.Select(c => c.FullName).ToList()))
             .ForMember(dto => dto.Franchise, opt => opt
-            .MapFrom(p => p.FranchiseId));
+            .MapFrom(f => f.FranchiseId));
         }
     }
 }

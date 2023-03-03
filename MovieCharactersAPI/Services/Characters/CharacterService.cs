@@ -30,7 +30,7 @@ namespace MovieCharactersAPI.Services.Characters
         public async Task<ICollection<Character>> GetAllCharacters()
         {
             return await _context.Characters
-             .Include(p => p.Movies)
+             .Include(c => c.Movies)
              .ToListAsync();
         }
         public async Task<Character> GetCharacterById(int id)

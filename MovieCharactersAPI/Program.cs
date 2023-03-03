@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieCharactersAPI.Models;
@@ -7,14 +6,11 @@ using MovieCharactersAPI.Services.Franchises;
 using MovieCharactersAPI.Services.Movies;
 using System.Reflection;
 
-// Create the Web application
 var builder = WebApplication.CreateBuilder(args);
 
 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-
-// Add services to the container (Dependences injection).
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MovieCharactersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -46,22 +42,16 @@ builder.Services.AddTransient<ICharacterService, CharacterService>();
 builder.Services.AddTransient<IFranchiseService, FranchiseService>();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-
-// Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// Adding logging through ILogger
 builder.Host.ConfigureLogging(logging =>
 {
     logging.ClearProviders();
     logging.AddConsole();
 });
 
-
-// Build the web application with all the dependences
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
