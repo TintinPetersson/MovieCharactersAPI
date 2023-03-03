@@ -40,11 +40,13 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="id">Movie id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<MovieDto>> GetMovie(int id)
         {
             try
             {
-                return await _movieService.GetMovieById(id);
+                var movie = await _movieService.GetMovieById(id);
+                var movieDto = _mapper.Map<MovieDto>(movie);
+                return Ok(movieDto);
             }
             catch (MovieNotFoundException ex)
             {

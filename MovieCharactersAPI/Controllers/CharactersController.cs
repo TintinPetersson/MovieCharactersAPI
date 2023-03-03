@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieCharactersAPI.Dtos.Characters;
+using MovieCharactersAPI.Dtos.Franchises;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Services.Characters;
@@ -40,11 +41,13 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="id">character id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacter(int id)
+        public async Task<ActionResult<CharacterDTO>> GetCharacter(int id)
         {
             try
             {
-                return await _characterService.GetCharacterById(id);
+                var character = await _characterService.GetCharacterById(id);
+                var characterDto = _mapper.Map<CharacterDTO>(character);
+                return Ok(characterDto);
             }
             catch (CharacterNotFoundException ex)
             {

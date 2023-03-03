@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieCharactersAPI.Dtos.Franchises;
+using MovieCharactersAPI.Dtos.Movies;
 using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Services.Franchises;
@@ -40,11 +41,13 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="id">franchise id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Franchise>> GetFranchise(int id)
+        public async Task<ActionResult<FranchiseDto>> GetFranchise(int id)
         {
             try
             {
-                return await _franchiseService.GetFranchiseById(id);
+                var franchise = await _franchiseService.GetFranchiseById(id);
+                var franchiseDto = _mapper.Map<FranchiseDto>(franchise);
+                return Ok(franchiseDto);
             }
             catch (FranchiseNotFoundException ex)
             {

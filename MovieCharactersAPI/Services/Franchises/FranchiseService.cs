@@ -39,7 +39,7 @@ namespace MovieCharactersAPI.Services.Franchises
 
         public async Task<Franchise> GetFranchiseById(int id)
         {
-            var franchise = await _context.Franchises.FindAsync(id);
+            var franchise = await _context.Franchises.Include(f => f.Movies).SingleOrDefaultAsync(f => f.Id == id);
 
             if (franchise == null)
             {
